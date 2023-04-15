@@ -9,13 +9,14 @@ segmentation performance of different data processing alternatives chosen for mo
   <img src="pipeline-artifacts/assets/point-cloud-data-processing-pipeline.png" />
 </p>
 <p align="center">
-<b>Figure 1:</b> The point cloud segmentation pipeline for processing large scale agriculture datasets..
+<b>Figure 1:</b> The point cloud segmentation pipeline for processing large scale agriculture datasets.
 </p>
 
 ## Table of Contents
 
 * [Dataset Description of `Fuji Apple` Point Cloud Datasets](#dataset-description-of-fuji-apple-point-cloud-datasets)
 * [Preprocessed `PCL` datasets Descriptions and Download Links](#preprocessed-pcl-datasets-descriptions-and-download-links)
+* [`PCL` Upsampling Insights](#pcl-upsampling-insights)
 * [Experimentation Summarization](#experimentation-summarization)
 * [Citing the Experiment Findings and Accompanying Theoretical Document](#citing-the-experiment-findings-and-accompanying-theoretical-document)
 
@@ -41,6 +42,38 @@ to be upsampled by 2X factor during the patch generation phase.
 * [`PFuji-Size-2020-Orchard data`](https://drive.google.com/file/d/10rwpTwny6eRYvgZzP5zJ6xBornBTCMQD/view?usp=share_link): 
 Cropped dataset with combined east and west 2020 orchard PCL data with no upsampling, but individual apple patches needs
 to be upsampled by 2X factor during the patch generation phase.
+
+#### `PCL` Upsampling Insights
+
+The  point cloud datasets under analysis are highly undersampled and contain only sparse representations of apple point clouds.
+Hence, upsampling the apple point clouds as pre-processing can help the model learn better representations for apple class objects.
+Since, the complete point cloud size is very large for _PFuji-SfM_ dataset, we apply the upsampling operation on its patches only.
+Whereas for the relatively smaller _Fuji-SfM_ we upsample the apple point cloud when the complete dataset is still together as a monolith.
+In our upsampling technique we randomly pick an apple point cloud class point and find its nearest neighbor, after that take an average of
+_{X, Y, Z, R, G, B, F1, ... , FK}_ values of the selected random point and nearest neighbor.
+And, add this new point to the list of newly generated point clouds, and when this new list size reaches 80 \% existing point cloud size,
+then the complete point cloud is updated with the addition of newly generated point clouds.
+In below Table 1 and 2, we highlight the difference between original PCL patches, 2X apple point cloud upsampled patches, and
+3X apple point cloud upsampled patches.
+The point cloud plotter downsampled the points to a maximum of 40K points, therefore the apple point cloud density appears to be almost
+similar for all subplots. But, with close observation we can observe that the density of the background class representations is decreasing
+as the upsampling factor is increasing.
+
+| **Original Data Patch** | **2X Upsampled Patch** | **3X Upsampled Patch** |
+| --- | --- | --- |
+| ![Original Patch One](pipeline-artifacts/assets/data-patch-one-org.png) | ![2X Upsampled Patch One](pipeline-artifacts/assets/data-patch-one-double.png) | ![3X Upsampled Patch One](pipeline-artifacts/assets/data-patch-one-triple.png) |
+| ![Original Patch Two](pipeline-artifacts/assets/data-patch-two-org.png) | ![2X Upsampled Patch Two](pipeline-artifacts/assets/data-patch-two-double.png) | ![3X Upsampled Patch Two](pipeline-artifacts/assets/data-patch-two-triple.png) |
+<p align="center">
+<b>Table 1:</b> The point cloud upsampling comparison table for <em>Fuji-SfM</em> dataset's point cloud data patches.
+</p>
+
+| **Original Segmented Patch** | **2X Upsampled Patch** | **3X Upsampled Patch** |
+| --- | --- | --- |
+| ![Original Patch One](pipeline-artifacts/assets/seg-data-patch-one-org.png) | ![2X Upsampled Patch One](pipeline-artifacts/assets/seg-data-patch-one-double.png) | ![3X Upsampled Patch One](pipeline-artifacts/assets/seg-data-patch-one-triple.png) |
+| ![Original Patch Two](pipeline-artifacts/assets/seg-data-patch-two-org.png) | ![2X Upsampled Patch Two](pipeline-artifacts/assets/seg-data-patch-two-double.png) | ![3X Upsampled Patch Two](pipeline-artifacts/assets/seg-data-patch-two-triple.png) |
+<p align="center">
+<b>Table 2:</b> The point cloud upsampling comparison table for <em>Fuji-SfM</em> dataset's segmented point cloud data patches.
+</p>
 
 #### Experimentation Summarization
 
@@ -68,7 +101,9 @@ converged or learnt any valuable representations.
 So, it might be possible that apple annotations are present in the _*.LAZ_ point cloud files of the orchard dataset.
 
 **In Progress Work Note:** Currently, the _PFuji-Size_ dataset debugging, and more extensive README.md documentation
-is in progress. If some data preprocessing flaw is detected we will update the code repository accordingly, and share
+is in progress.
+Additionally, we are also testing data augmentation techniques for the _Fuji-SfM_ dataset to measure any performance gains.
+If some data preprocessing flaw is detected we will update the code repository accordingly, and share
 the updated notebooks and model checkpoints.
 
 #### Citing the Experiment Findings and Accompanying Theoretical Document
