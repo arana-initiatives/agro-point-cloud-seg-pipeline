@@ -14,12 +14,21 @@ segmentation performance of different data processing alternatives chosen for mo
 
 ## Table of Contents
 
+* [Theoretical Survey and Ideation Work](#theoretical-survey-and-ideation-work)
 * [Dataset Description of `Fuji Apple` Point Cloud Datasets](#dataset-description-of-fuji-apple-point-cloud-datasets)
 * [Preprocessed `PCL` datasets Descriptions and Download Links](#preprocessed-pcl-datasets-descriptions-and-download-links)
 * [Model Training`PCL` datasets Descriptions and Download Links](#model-pcl-datasets-descriptions-and-download-links)
 * [`PCL` Upsampling Insights](#pcl-upsampling-insights)
+* [Model Training and Experiment Observations](#model-training-and-experiment-bbservations)
 * [Experimentation Summarization](#experimentation-summarization)
 * [Citing the Experiment Findings and Accompanying Theoretical Document](#citing-the-experiment-findings-and-accompanying-theoretical-document)
+
+#### Theoretical Survey and Ideation Work
+
+This practical experimentation work is accompanied by the titled theoretical work
+![_"Exploring Scope of Applying Deep Learning Techniques on 3D Agriculture Data"_](https://github.com/arana-initiatives/ai-portfolio-bibliography)
+which explores the blue-sky idea to analyze 3D large scale agriculture with deep learning models.
+Please, refer to this work to learn more about background and current research landscape for scope of applying this idea in realistic yield monitoring use-cases.
 
 #### Dataset Description of `Fuji Apple` Point Cloud Datasets
 
@@ -114,6 +123,28 @@ as the upsampling factor is increasing.
 <p align="center">
 <b>Table 2:</b> The point cloud upsampling comparison table for <em>Fuji-SfM</em> dataset's segmented point cloud data patches.
 </p>
+
+#### Model Training and Experiment Observations
+
+For our experimentation we train four models to carry model training for four different dataset versions, refer Table 3.
+The below table provides the experimentation details for the trained RandLA-Net segmentation models by using Open3D-ML’s implementation.
+This implementation provided by Open3D for RandLA-Net is currently the best implementation for this architecture, and gives the best segmentation results on standard benchmarks, like S3DIS, SematicKITTI etc.
+
+| **Model Description and Checkpoint Link** | **Dataset Description _(Features)_** | **Epochs Trained** | **Approximate Epoch Time** | **Learning Rate** |  **Overfitting Detected** |
+| --- | --- | --- | --- | --- | --- |
+| ![Fuji-SfM trained RandLA-Net Checkpoint](https://drive.google.com/file/d/1DxEWJO2StCxacIhx6V5nANgLb6FNRUIw/view?usp=share_link) | Fuji-SfM _([X,Y,Z])_ | 40+18 | 20 mins / per epoch | 0.0005+0.00025 | Yes |
+| ![PFuji-Size + Fuji-SfM RandLA-Net Checkpoint](https://drive.google.com/file/d/1_tpPJHvYjUfQX4BEttZV6aWpBFlY4Fe8/view?usp=share_link) | PFuji-Size + Fuji-SfM _([X,Y,Z,R,G,B])_ | 20 | 55 mins / per epoch | 0.001 | Yes |
+| ![PFuji-Size + Fuji-SfM + Normals RandLA-Net Checkpoint](https://drive.google.com/file/d/1PCSA4-cEkDBOd2XvIB1V0-SAGXGQgtIo/view?usp=share_link) | PFuji-Size + Fuji-SfM + Normal Features _([X,Y,Z,R,G,B,NX,NY,NZ])_ | 25 | 1 hour / per epoch | 0.001 | Yes |
+| ![PFuji-Size - RGB + Normals RandLA-Net Checkpoint](https://drive.google.com/file/d/1epDzTaZlEy8I1BII0g_OgnYbUjbqQUIs/view?usp=share_link) | PFuji-Size + Normal Features - RGB Features _([X,Y,Z,NX,NY,NZ])_ | 15 | 45 mins / per epoch | 0.001 | Yes |
+
+<p align="center">
+<b>Table 3:</b> The RandLA-Net model training and experimentation summary for the Fuji apple datasets.
+</p>
+
+For all the above experiments trained with different hyperparameters, different epochs, and different datasets none the segmentation model converges.
+Since, none of the models have converged in our experimentation settings and data preprocessing methodology, deriving evaluation metrics like, accuracy and mean IoU would not provide any further insights.
+In every experiment the model overfits on the point cloud data, where the training performance keeps on increasing, and validation performance is saturated because the model assigns all point cloud data points to a single class.
+We attribute this behavior to the model’s inability to process the complex geometries associated with the background class and differentiate it from the apple point cloud representations.
 
 #### Experimentation Summarization
 
