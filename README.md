@@ -184,7 +184,6 @@ On a positive note, the RandLA-Net model does scale well with processing data pa
 | --- | --- | --- |
 | ![Ground Truth Data Patch 1](pipeline-artifacts/assets/baseline-data-patch-one-gt.png) | ![Ground Truth Data Patch 2](pipeline-artifacts/assets/baseline-data-patch-two-gt.png) | ![Ground Truth Data Patch 3](pipeline-artifacts/assets/baseline-data-patch-three-gt.png) |
 | **Prediction Data Patch 1** | **Prediction Data Patch 2** | **Prediction Data Patch 3** |
-| --- | --- | --- |
 | ![Prediction Data Patch 1](pipeline-artifacts/assets/baseline-data-patch-one-pred.png) | ![Prediction Data Patch 2](pipeline-artifacts/assets/baseline-data-patch-two-pred.png) | ![Prediction Data Patch 3](pipeline-artifacts/assets/baseline-data-patch-three-pred.png) |
 
 <p align="center">
