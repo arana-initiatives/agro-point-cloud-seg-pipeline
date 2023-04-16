@@ -12,14 +12,14 @@ segmentation performance of different data processing alternatives chosen for mo
 <b>Figure 1:</b> The point cloud segmentation pipeline for processing large scale agriculture datasets.
 </p>
 
-## Table of Contents
+### Table of Contents
 
 * [Theoretical Survey and Ideation Work](#theoretical-survey-and-ideation-work)
 * [Dataset Description of `Fuji Apple` Point Cloud Datasets](#dataset-description-of-fuji-apple-point-cloud-datasets)
-* [Preprocessed `PCL` datasets Descriptions and Download Links](#preprocessed-pcl-datasets-descriptions-and-download-links)
-* [Model Training`PCL` datasets Descriptions and Download Links](#model-pcl-datasets-descriptions-and-download-links)
+* [Preprocessed `PCL` Datasets Descriptions and Download Links](#preprocessed-pcl-datasets-descriptions-and-download-links)
+* [Model Training`PCL` Dataset Download Links](#model-training-pcl-dataset-download-links)
 * [`PCL` Upsampling Insights](#pcl-upsampling-insights)
-* [Model Training and Experiment Observations](#model-training-and-experiment-bbservations)
+* [Model Training and Experiment Observations](#model-training-and-experiment-observations)
 * [Experimentation Summarization](#experimentation-summarization)
 * [Citing the Experiment Findings and Accompanying Theoretical Document](#citing-the-experiment-findings-and-accompanying-theoretical-document)
 
@@ -50,7 +50,7 @@ is generated using SfM _(Structure from Motion)_ technique.
 cloud of 615 Fuji apples scanned in-field conditions for three Fuji apple trees using SfM and
 MVS _(Multi-View-Stereo)_ techniques.
 
-#### Preprocessed `PCL` datasets Descriptions and Download Links
+#### Preprocessed `PCL` Datasets Descriptions and Download Links
 
 The the original datasets contains huge number of background point clouds which possibly introduces lot complexities
 for the point cloud segmentation models. Therefore, to simplify the model training process based on apple locations of
@@ -75,10 +75,9 @@ to be upsampled by 2X factor during the patch generation phase.
 Cropped dataset with combined east and west 2020 orchard PCL data with no upsampling, but individual apple patches needs
 to be upsampled by 2X factor during the patch generation phase.
 
-#### Model Training`PCL` datasets Descriptions and Download Links
+#### Model Training`PCL` Dataset Download Links
 
-Considering the complexity of this segmentation task where only the apple class is annotated but other classes like
-leaves, branches, and trunks etc. are annotated and combined as a single high fidelity background class.
+Considering the complexity of this segmentation task where only the apple class is annotated but other classes like leaves, branches, and trunks etc. are annotated and combined as a single high fidelity background class.
 We further upsampled the apple class point clouds to further simplify the model training task.
 Also, we added additional normal estimate features to improve learning performance and created below three dataset versions for experimentation.
 
