@@ -16,12 +16,23 @@ segmentation performance of different data processing alternatives chosen for mo
 
 * [Dataset Description of `Fuji Apple` Point Cloud Datasets](#dataset-description-of-fuji-apple-point-cloud-datasets)
 * [Preprocessed `PCL` datasets Descriptions and Download Links](#preprocessed-pcl-datasets-descriptions-and-download-links)
+* [Model Training`PCL` datasets Descriptions and Download Links](#model-pcl-datasets-descriptions-and-download-links)
 * [`PCL` Upsampling Insights](#pcl-upsampling-insights)
 * [Experimentation Summarization](#experimentation-summarization)
 * [Citing the Experiment Findings and Accompanying Theoretical Document](#citing-the-experiment-findings-and-accompanying-theoretical-document)
 
-
 #### Dataset Description of `Fuji Apple` Point Cloud Datasets
+
+Below we share the original dataset download link provided by the GRAP group from University of Llieda, Spain.
+These datasets are acquired by applying SfM on the photographic images of the Fuji apple orchards, refer Figure 2.
+
+<p align="center">
+  <img src="pipeline-artifacts/assets/fuji-sfm-dataset.png" width="600" />
+</p>
+<p align="center">
+<b>Figure 2:</b> The isometric view of the Fuji-SfM dataset acquisition process where blue cuboids represent
+the bounding box annotations.
+</p>
 
 * [`Fuji-SfM dataset`](https://www.grap.udl.cat/en/publications/fuji-sfm-dataset/): 3D point cloud
 of scanned scene with annotation of apple locations for 11 Fuji apple trees where the 3D model
@@ -32,8 +43,20 @@ MVS _(Multi-View-Stereo)_ techniques.
 
 #### Preprocessed `PCL` datasets Descriptions and Download Links
 
+The the original datasets contains huge number of background point clouds which possibly introduces lot complexities
+for the point cloud segmentation models. Therefore, to simplify the model training process based on apple locations of
+the `Fuji-SfM` and `PFuji-Size` datasets the additional background point clouds were removed, refer Figure 3.
+
+<p align="center">
+  <img src="pipeline-artifacts/assets/fuji-sfm-apple-location-scatter-plot.png" width="300" />
+  <img src="pipeline-artifacts/assets/pfuji-size-apple-location-scatter-plot.png" width="300" />
+</p>
+<p align="center">
+<b>Figure 2:</b> The apple location scatter plots for a.) Fuji-SfM <em>(Left)</em> and a.) PFuji-Size <em>(Right)</em> datasets respectively.
+</p>
+
 * [`Fuji-SfM data`](https://drive.google.com/file/d/1LHL5gp7agQyTJgodyVzjFw7qUilYZMcM/view?usp=share_link): 
-Cropped dataset based on the apple locations with apple PCL KKN based upsampling upto five times the original PCL count.
+Cropped dataset based on the apple locations with apple PCL KKN based upsampling up to three times the original PCL count.
 
 * [`PFuji-Size-2018-Orchard data`](https://drive.google.com/file/d/19LEgF3_Q5MyxDm9_Ci4kg1VInfCS-oD7/view?usp=sharing): 
 Cropped dataset with combined east and west 2018 orchard PCL data with no upsampling, but individual apple patches needs
@@ -42,6 +65,23 @@ to be upsampled by 2X factor during the patch generation phase.
 * [`PFuji-Size-2020-Orchard data`](https://drive.google.com/file/d/10rwpTwny6eRYvgZzP5zJ6xBornBTCMQD/view?usp=share_link): 
 Cropped dataset with combined east and west 2020 orchard PCL data with no upsampling, but individual apple patches needs
 to be upsampled by 2X factor during the patch generation phase.
+
+#### Model Training`PCL` datasets Descriptions and Download Links
+
+Considering the complexity of this segmentation task where only the apple class is annotated but other classes like
+leaves, branches, and trunks etc. are annotated and combined as a single high fidelity background class.
+We further upsampled the apple class point clouds to further simplify the model training task.
+Also, we added additional normal estimate features to improve learning performance and created below three dataset versions for experimentation.
+
+* [`Fuji-SfM Model Training Data`](https://drive.google.com/file/d/14ehzotC2FNMxYaozTo7QrsoNPUTxOGrf/view?usp=share_link): 
+This dataset only contains the upsampled dataset patches generated from splitting the _Fuji-SfM_ dataset only.
+
+* [`Fuji Complete Training Data`](https://drive.google.com/file/d/1PKrFuXuyglxtLJUDcZNYrIj8fZnhKD2_/view?usp=share_link): 
+This dataset only contains the upsampled dataset patches generated from splitting the _Fuji-SfM_ and _Puji-Size_ datasets.
+
+* [`Fuji Normals Complete Training Data`](https://drive.google.com/file/d/1FmG9jR9JKfChSsvo_DmUTY1051dKS8EY/view?usp=share_link): 
+This dataset only contains the upsampled dataset patches generated from splitting the _Fuji-SfM_ and _Puji-Size_ datasets
+with added additional three normal features for each point cloud data point.
 
 #### `PCL` Upsampling Insights
 
