@@ -5,8 +5,9 @@ This codebase contains a point cloud segmentation pipeline for _Fuji Apple_ 3D d
 Further, we experiment with different model iterations to further quantitatively evaluate the
 segmentation performance of different data processing alternatives chosen for model training.
 
-**`TL;DR`**: `This repository contains RandLA-Net model experiments on Fuji apple datasets for point cloud segmentation, but the training didn't converge with unavoidable overfitting issues (refer below).
-But, this repository definitely contains point cloud processing code that will help you in easy prototyping, and the notebooks are Google Colab compatible.`
+**`TL;DR`**: `This repository contains RandLA-Net model experiments on Fuji apple datasets for point cloud segmentation, but the models overfit with unavoidable dataset complexity issues (refer below).
+This repository definitely contains point cloud processing code that will help you in easy prototyping, and the notebooks are Colab ready.
+Any improvement suggestions are highly appreciated! Thanks!`
 
 <p align="center">
   <img src="pipeline-artifacts/assets/point-cloud-data-processing-pipeline.png" />
@@ -21,8 +22,10 @@ But, this repository definitely contains point cloud processing code that will h
 * [Dataset Description of `Fuji Apple` Point Cloud Datasets](#dataset-description-of-fuji-apple-point-cloud-datasets)
 * [Preprocessed `PCL` Datasets Descriptions and Download Links](#preprocessed-pcl-datasets-descriptions-and-download-links)
 * [Model Training Dataset Download Links](#model-training-dataset-download-links)
+* [Experiment Implementation Work Flow](#experiment-implementation-work-flow)
 * [`PCL` Upsampling Insights](#pcl-upsampling-insights)
 * [Model Training and Experiment Observations](#model-training-and-experiment-observations)
+* [Initial Performance Results](#initial-performance-results)
 * [Experimentation Summarization](#experimentation-summarization)
 * [Citing the Experiment Findings and Accompanying Theoretical Document](#citing-the-experiment-findings-and-accompanying-theoretical-document)
 
@@ -94,6 +97,19 @@ This dataset only contains the upsampled dataset patches generated from splittin
 This dataset only contains the upsampled dataset patches generated from splitting the _Fuji-SfM_ and _Puji-Size_ datasets
 with added additional three normal features for each point cloud data point.
 
+#### Experiment Implementation Work Flow
+
+This section elaborates more about the Colab notebook files that were used to do the data preparation and processing, visualizations, training, and evaluations.
+Below, we provide a small description for each of these notebooks in sequential reference order for experiment replications and point cloud segmentation model prototyping.
+
+* [`fuji-sfm-and-pfuji-size-pcl-npy-preparator.ipynb`](fuji-sfm-and-pfuji-size-pcl-npy-preparator.ipynb): This notebook contains dataset preparation steps for both _Fuji-SfM_ and _PFuji-Size_ datasets.
+* [`fuji-sfm-and-pfuji-size-data-patch-generator.ipynb`](fuji-sfm-and-pfuji-size-data-patch-generator.ipynb): This notebook contains dataset patch generation and upsampling steps for both _Fuji-SfM_ and _PFuji-Size_ datasets, and finally preparing merged dataset. Also, the naming convention logic for _Fuji-SfM_ dataset is updated in this notebook but the _Fuji-SfM_ patch dataset is having the older patch window subsection based naming convention.
+* [`fuji-sfm-and-pfuji-size-pcl-upsampling-visualizations.ipynb`](fuji-sfm-and-pfuji-size-pcl-upsampling-visualizations.ipynb): This notebook presents the code for visualizing 3D point cloud data patches easily on Colab.
+* [`baseline-fuji-sfm-dataset-model-trainer-and-evaluator.ipynb`](baseline-fuji-sfm-dataset-model-trainer-and-evaluator.ipynb):This notebook provides the complete model trainer, tensorboard learning curve visualizer, evaluator, and data patch visualizer components. It serves as a test bed for other model trainer notebooks for prototyping.    
+* [`fuji-complete-dataset-model-trainer.ipynb`](fuji-complete-dataset-model-trainer.ipynb): This notebook provides the complete model trainer and tensorboard learning curve components for the complete dataset.
+* [`fuji-complete-with-normals-dataset-model-trainer.ipynb`](fuji-complete-with-normals-dataset-model-trainer.ipynb): This notebook provides the complete model trainer and tensorboard learning curve components for the complete dataset containing the normal estimates with RGB information.
+* [`pfuji-size-norm-model-trainer.ipynb`](pfuji-size-norm-model-trainer.ipynb): This notebook provides the complete model trainer and tensorboard learning curve components for the _PFuji-Size_ dataset containing only the normal estimates with no RGB information.
+
 #### `PCL` Upsampling Insights
 
 The  point cloud datasets under analysis are highly undersampled and contain only sparse representations of apple point clouds.
@@ -134,7 +150,7 @@ This implementation provided by Open3D for RandLA-Net is currently the best impl
 
 | **Model Description and Checkpoint Link** | **Dataset Description _(Features)_** | **Epochs Trained** | **Approximate Epoch Time** | **Learning Rate** |  **Overfitting Detected** |
 | --- | --- | --- | --- | --- | --- |
-| ![Fuji-SfM trained RandLA-Net Checkpoint](https://drive.google.com/file/d/1DxEWJO2StCxacIhx6V5nANgLb6FNRUIw/view?usp=share_link) | Fuji-SfM _([X,Y,Z])_ | 40+18 | 20 mins / per epoch | 0.0005+0.00025 | Yes |
+| ![Fuji-SfM trained RandLA-Net Checkpoint](https://drive.google.com/file/d/1DxEWJO2StCxacIhx6V5nANgLb6FNRUIw/view?usp=share_link) | Fuji-SfM _([X,Y,Z])_ | 40+18 | 20 mins / per epoch | 0.0005(40) + 0.00025(18) | Yes |
 | ![PFuji-Size + Fuji-SfM RandLA-Net Checkpoint](https://drive.google.com/file/d/1_tpPJHvYjUfQX4BEttZV6aWpBFlY4Fe8/view?usp=share_link) | PFuji-Size + Fuji-SfM _([X,Y,Z,R,G,B])_ | 20 | 55 mins / per epoch | 0.001 | Yes |
 | ![PFuji-Size + Fuji-SfM + Normals RandLA-Net Checkpoint](https://drive.google.com/file/d/1PCSA4-cEkDBOd2XvIB1V0-SAGXGQgtIo/view?usp=share_link) | PFuji-Size + Fuji-SfM + Normal Features _([X,Y,Z,R,G,B,NX,NY,NZ])_ | 25 | 1 hour / per epoch | 0.001 | Yes |
 | ![PFuji-Size - RGB + Normals RandLA-Net Checkpoint](https://drive.google.com/file/d/1epDzTaZlEy8I1BII0g_OgnYbUjbqQUIs/view?usp=share_link) | PFuji-Size + Normal Features - RGB Features _([X,Y,Z,NX,NY,NZ])_ | 15 | 45 mins / per epoch | 0.001 | Yes |
@@ -143,41 +159,61 @@ This implementation provided by Open3D for RandLA-Net is currently the best impl
 <b>Table 3:</b> The RandLA-Net model training and experimentation summary for the Fuji apple datasets.
 </p>
 
-For all the above experiments trained with different hyperparameters, different epochs, and different datasets none the segmentation model converges.
-Since, none of the models have converged in our experimentation settings and data preprocessing methodology, deriving evaluation metrics like, accuracy and mean IoU would not provide any further insights.
-In every experiment the model overfits on the point cloud data, where the training performance keeps on increasing, and validation performance is saturated because the model assigns all point cloud data points to a single class.
-We attribute this behavior to the model’s inability to process the complex geometries associated with the background class and differentiate it from the apple point cloud representations.
+For all the above experiments trained with different hyperparameters, different epochs, and different datasets all the segmentation models demonstrate overfitting _(unavoidable)_.
+Evaluation metrics like, accuracy and mean IoU gives inconsistent results for validation evaluation during training for different data patches. 
+Essentially, the trained models are highly vulnerable to make completely wrong predictions with very high confidence.
+This can be attributed to the fact that distinction between the different point cloud class objects is not very strong, and the model is unable to learn where one object finishes and another begins.
+Even after applying label smoothing and class weight based penalization during training the overfitting problem still persists for all the model iterations against all the datasets.
+We further attribute this behavior to the model’s inability to process the complex geometries associated with the background class and differentiate it from the apple point cloud representations during the learning stage.
+
+**_Note:_** The datasets containing the _PFuji-Size_ dataset needed large training time on Colab compute servers.
+Therefore, after the overfitting detection during the training, the learning for these models were halted.
+This was monitored from Tensorboard’s loss and metric curves on train and validation sets.
+
+#### Initial Performance Results
+
+From the baseline model performance notebook, evaluating other trained model iterations, and by qualitatively observing the Table 4 results, we conclude that model predictions are inconsistent.
+The average accuracy metrics values are within the permitted limits of a decent performing segmentation model.
+But, the mIOU values are highly inconsistent and in some cases very poor in some cases, like data patch 1 in Table 4.
+Additionally, in general we have observed when the connectedness of the point cloud increases the prediction capabilities of the segmentation faces a major performance blow, like for data patch 1 and 2 in Table 4.
+This can be again attributed to the fact that the apple, leaves, and branches point cloud are not consistent in terms of their shapes in the dataset point clouds.
+Even for us humans they are quite to segment manually on these point cloud datasets, so clearly the model is also facing boundary distinction issues for these classes.
+On a positive note, the RandLA-Net model does scale well with processing data patches of size 100k easily in this use-case, and a very low inference time of under 1 mins in worst case scenarios on Colab CPUs.
+
+| **Ground Truth Data Patch 1** | **Ground Truth Data Patch 2** | **Ground Truth Data Patch 3** |
+| --- | --- | --- |
+| ![Ground Truth Data Patch 1](pipeline-artifacts/assets/baseline-data-patch-one-gt.png) | ![Ground Truth Data Patch 2](pipeline-artifacts/assets/baseline-data-patch-two-gt.png) | ![Ground Truth Data Patch 3](pipeline-artifacts/assets/baseline-data-patch-three-gt.png) |
+| **Prediction Data Patch 1** | **Prediction Data Patch 2** | **Prediction Data Patch 3** |
+| --- | --- | --- |
+| ![Prediction Data Patch 1](pipeline-artifacts/assets/baseline-data-patch-one-pred.png) | ![Prediction Data Patch 2](pipeline-artifacts/assets/baseline-data-patch-two-pred.png) | ![Prediction Data Patch 3](pipeline-artifacts/assets/baseline-data-patch-three-pred.png) |
+
+<p align="center">
+<b>Table 4:</b> Qualitative prediction output analysis of the baseline RandLA-Net model predictions trained only with <em>Fuji-SfM</em> dataset.
+</p>
+
+**Note:** For building a really fast point cloud processing system this result is quite impressive.
+And,  even learning some segmentation capabilities on these complex datasets is also not bad.
 
 #### Experimentation Summarization
 
-In our experiments we trained four different models as described in the above experimentation methodology section.
-All the trained models failed to converge with different dataset iterations and different hyperparameters, like
-changed learning rate, batch size etc.
-This majorly can be attributed to the complexity of segmentation tasks where countless complex objects like, grass,
-branches, trunks, and soil textures are grouped into background class. 
+In our experiments we trained four different models as described in the above model training and experimentation methodology section.
+All the trained models failed to converge _(overfitting)_ with different dataset iterations and different hyperparameters, like changed learning rate, batch size, label smoothing, class weights etc.
+This majorly can be attributed to the complexity of segmentation tasks where countless complex objects like, grass, branches, trunks, and soil textures are grouped into background class.
 It becomes very hard to differentiate between different objects and classify the apple class point cloud data points.
-Therefore, a point cloud dataset with more extensive segmentation annotations can help in building a segmentation model
-that correctly segments out Fuji apples directly.
+Therefore, a point cloud dataset with more extensive segmentation annotations can help in building a segmentation model that correctly segments out Fuji apples directly.
 
-Further, technically the _Fuji-SfM_ dataset provides only bounding box cubical annotations which were translated to
-segment apple point clouds for ground truth preparation.
+Further, technically the _Fuji-SfM_ dataset provides only bounding box cubical annotations which were translated to segment apple point clouds for ground truth preparation.
 These cubical bounding boxes systematically might have introduced leaf point clouds in these ground truth annotations.
-Second, this dataset is rather sparse and does not provide an extensive point cloud for effective model training, 
-and might require extensive data augmentation for building robust segmentation models.
+Second, this dataset is rather sparse and does not provide an extensive point cloud for effective model training, and might require extensive data augmentation for building robust segmentation models.
 
-And, for the _PFuji-Size_ dataset the documentation of the dataset is rather a bit ambiguous, and hard to follow up with
-_*.LAZ_ format point cloud files.
-In this dataset, the orchard point clouds and apple annotation files are provided separately for analysis but nowhere it
-is explicitly mentioned whether the orchard point cloud files contain the apple annotations within it or not.
-We assumed, that these annotations are not present in the shared orchard point clouds, and evidently the models have not
-converged or learnt any valuable representations.
-So, it might be possible that apple annotations are present in the _*.LAZ_ point cloud files of the orchard dataset.
+And, for the _PFuji-Size_ dataset the documentation of the dataset is rather a bit ambiguous, and hard to follow up with _*.LAZ_ format point cloud files.
+In this dataset, the orchard point clouds and apple annotation files are provided separately for analysis but nowhere it is explicitly mentioned whether the orchard point cloud files contain the apple annotations within it or not.
+We assumed that these annotations are not present in the shared orchard point clouds, and evidently the models have not converged or learnt any valuable representations.
+So, it might be possible that apple annotations are present in the _*.LAZ_ point cloud files of the orchard dataset and that would have compromised the model performance.
 
-**In Progress Work Note:** Currently, the _PFuji-Size_ dataset debugging, and more extensive README.md documentation
-is in progress.
+**In Progress Work Note:** Currently, the _PFuji-Size_ dataset debugging, and more extensive README.md documentation is in progress.
 Additionally, we are also testing data augmentation techniques for the _Fuji-SfM_ dataset to measure any performance gains.
-If some data preprocessing flaw is detected we will update the code repository accordingly, and share
-the updated notebooks and model checkpoints.
+If some data preprocessing flaw is detected we will update the code repository accordingly, and share the updated notebooks and model checkpoints.
 
 #### Citing the Experiment Findings and Accompanying Theoretical Document
 
