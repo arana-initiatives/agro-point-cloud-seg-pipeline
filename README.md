@@ -5,6 +5,9 @@ This codebase contains a point cloud segmentation pipeline for _Fuji Apple_ 3D d
 Further, we experiment with different model iterations to further quantitatively evaluate the
 segmentation performance of different data processing alternatives chosen for model training.
 
+**`TL;DR`**: `This repository contains RandLA-Net model experiments on Fuji apple datasets for point cloud segmentation, but the training didn't converge with unavoidable overfitting issues (refer below).
+But, this repository definitely contains point cloud processing code that will help you in easy prototyping, and the notebooks are Google Colab compatible.`
+
 <p align="center">
   <img src="pipeline-artifacts/assets/point-cloud-data-processing-pipeline.png" />
 </p>
@@ -17,7 +20,7 @@ segmentation performance of different data processing alternatives chosen for mo
 * [Theoretical Survey and Ideation Work](#theoretical-survey-and-ideation-work)
 * [Dataset Description of `Fuji Apple` Point Cloud Datasets](#dataset-description-of-fuji-apple-point-cloud-datasets)
 * [Preprocessed `PCL` Datasets Descriptions and Download Links](#preprocessed-pcl-datasets-descriptions-and-download-links)
-* [Model Training`PCL` Dataset Download Links](#model-training-pcl-dataset-download-links)
+* [Model Training Dataset Download Links](#model-training-dataset-download-links)
 * [`PCL` Upsampling Insights](#pcl-upsampling-insights)
 * [Model Training and Experiment Observations](#model-training-and-experiment-observations)
 * [Experimentation Summarization](#experimentation-summarization)
@@ -75,7 +78,7 @@ to be upsampled by 2X factor during the patch generation phase.
 Cropped dataset with combined east and west 2020 orchard PCL data with no upsampling, but individual apple patches needs
 to be upsampled by 2X factor during the patch generation phase.
 
-#### Model Training`PCL` Dataset Download Links
+#### Model Training Dataset Download Links
 
 Considering the complexity of this segmentation task where only the apple class is annotated but other classes like leaves, branches, and trunks etc. are annotated and combined as a single high fidelity background class.
 We further upsampled the apple class point clouds to further simplify the model training task.
