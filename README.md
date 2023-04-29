@@ -46,7 +46,7 @@ These datasets are acquired by applying SfM on the photographic images of the Fu
 </p>
 <p align="center">
 <b>Figure 2:</b> The isometric view of the Fuji-SfM dataset acquisition process where blue cuboids represent
-the bounding box annotations.
+the bounding box annotations. <em>(Image Credit: Gené-Mola et al.)</em>
 </p>
 
 * [`Fuji-SfM dataset`](https://www.grap.udl.cat/en/publications/fuji-sfm-dataset/): 3D point cloud
